@@ -1,0 +1,51 @@
+1. user
+- id
+- firstName
+- lastName
+- userName
+- email
+- googleId->unique->nullable
+- password
+- roleId
+- profileImage->nullable
+
+2. user role
+- id
+- name
+
+3. blog
+- id
+- title
+- slug
+- body
+- categoryId
+- featuredImage
+- userId
+- keyword->nullable
+- metaDescription->nullable
+- metaTitle->nullable
+
+4. categoryBlog
+- id
+- name
+- slug
+
+5. commentBlog
+- id
+- userId
+- blogId
+
+6. likeBlog
+- id
+- userId
+- blogId
+
+7. menu
+- id
+- name
+
+8. accessMenu
+- id
+- menuId
+- roleId
+
