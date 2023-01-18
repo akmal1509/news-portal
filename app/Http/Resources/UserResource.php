@@ -2,19 +2,19 @@
 
 namespace App\Http\Resources;
 
-// use App\Traits\ApiCollectionResource;
+use App\Traits\ApiCollectionResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
-    // use ApiCollectionResource;
+    use ApiCollectionResource;
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,

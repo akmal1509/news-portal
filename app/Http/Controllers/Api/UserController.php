@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Repositories\User\UserRepository;
+use App\Services\Test\TestService;
 use App\Services\User\UserService;
 use App\Traits\Response;
 use Illuminate\Http\Request;
@@ -31,18 +33,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $result = $this->userRepository->with(['roles'])->all();
-        // $result = $this->userRepository->all();
-        return $this->successResponse(UserResource::collection($result));
-        // return response()->json([
-        //     "data" => UserResource::collection($result)
-        // ]);
-        // return UserResource::collection($result);
+        $result = $this->userService->all()->toJson();
+        return new UserResource($result);
     }
 
-    // public function create(UserStoreRequest $request, UserService $userService)
-    // {
-    //     $created = $userService->create($request->all());
-    //     return
-    // }
+    public function store(Request $request)
+    {
+        $created = $this->userService->create($request->all())->toJson();
+        new UserResource($created['data']);
+        return $this->storeResponse($created);
+    }
 }

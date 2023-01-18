@@ -1,12 +1,19 @@
 <?php
 
+
 namespace App\Services\Base;
 
-// use App\Traits\ResultService;
+use App\Traits\ResultService;
 
 class BaseService
 {
-    // use ResultService;
+    use ResultService;
+
+    protected $title = "";
+    protected $create_message = "";
+    protected $update_message = "";
+    protected $delete_message = "";
+
     /**
      * Find an item by id
      * @param mixed $id
@@ -14,7 +21,14 @@ class BaseService
      */
     public function find($id)
     {
-        return $this->mainRepository->find($id);
+        try {
+            $result = $this->mainRepository->find($id);
+            return $this->setResult($result)
+                ->setCode(200)
+                ->setStatus(true);
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     /**
@@ -24,7 +38,14 @@ class BaseService
      */
     public function findOrFail($id)
     {
-        return $this->mainRepository->findOrFail($id);
+        try {
+            $result = $this->mainRepository->findOrFail($id);
+            return $this->setResult($result)
+                ->setCode(200)
+                ->setStatus(true);
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     /**
@@ -33,47 +54,103 @@ class BaseService
      */
     public function all()
     {
-        return $this->mainRepository->all();
+        // return $this->mainRepository->all();
+
+        try {
+            $result = $this->mainRepository->all();;
+            return $this->setResult($result)
+                ->setCode(200)
+                ->setStatus(true);
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     /**
      * Create an item
      * @param array|mixed $data
-     * @return void
+     * @return Model|null
      */
     public function create($data)
     {
-        $this->mainRepository->create($data);
+        try {
+            $this->mainRepository->create($data);
+            return $this->setMessage($this->title . " " . $this->create_message)
+                ->setCode(200)
+                ->setStatus(true)
+                ->setResult($data);
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     /**
      * Update a model
      * @param int|mixed $id
      * @param array|mixed $data
-     * @return void
+     * @return bool|mixed
      */
     public function update($id, array $data)
     {
-        $this->mainRepository->update($id, $data);
+        try {
+            $this->mainRepository->update($id, $data);
+            return $this->setMessage($this->title . " " . $this->update_message)
+                ->setCode(200)
+                ->setStatus(true);
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     /**
      * Delete a model
      * @param int|Model $id
-     * @return void
      */
     public function delete($id)
     {
-        $this->mainRepository->delete($id);
+        try {
+            $this->mainRepository->delete($id);
+            return $this->setMessage($this->title . " " . $this->delete_message)
+                ->setCode(200)
+                ->setStatus(true);
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
     }
 
     /**
      * multiple delete
      * @param array $id
-     * @return void
+     * @return mixed
      */
     public function destroy(array $id)
     {
-        $this->mainRepository->destroy($id);
+        try {
+            $this->mainRepository->destroy($id);
+            return $this->setMessage($this->title . " " . $this->delete_message)
+                ->setCode(200)
+                ->setStatus(true);
+        } catch (\Exception $exception) {
+            return $this->exceptionResponse($exception);
+        }
+    }
+
+    /**
+     * Get Relations
+     * @param mixed $relations
+     * @return mixed
+     */
+    public function with($relations)
+    {
+
+        if (is_string($relations)) {
+            $this->with = explode(',', $relations);
+
+            return $this;
+        }
+
+        $this->with = is_array($relations) ? $relations : [];
+
+        return $this;
     }
 }

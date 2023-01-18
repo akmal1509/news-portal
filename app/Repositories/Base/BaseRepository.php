@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 class BaseRepository
 {
 
-
     /**
      * Summary of collection
      * @var mixed
@@ -65,9 +64,6 @@ class BaseRepository
     public function all()
     {
         return $this->model->all();
-        // $models = $this->getModel();
-        // $this->setCollection($models);
-        // return $models;
     }
 
     /**
@@ -108,24 +104,5 @@ class BaseRepository
     public function delete($id)
     {
         return $this->model->findOrFail($id)->delete();
-    }
-
-    /**
-     * Summary of with
-     * @param mixed $relations
-     * @return BaseRepository
-     */
-    public function with($relations)
-    {
-
-        if (is_string($relations)) {
-            $this->with = explode(',', $relations);
-
-            return $this;
-        }
-
-        $this->with = is_array($relations) ? $relations : [];
-
-        return $this;
     }
 }

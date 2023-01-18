@@ -4,16 +4,16 @@ namespace App\Traits;
 
 trait Response
 {
-    protected function successResponse($data, $message = '', $code = 200)
+    protected function storeResponse($data)
     {
         return response()->json(
             [
-                'status'  => 'Success',
-                'message' => $message,
-                'code'    => $code,
-                'data'    => $data,
+                'success'  => $data['success'],
+                'message' => $data['message'],
+                'code'    => $data['code'],
+                'data'    => $data['data'],
             ],
-            $code
+            $data['code']
         );
     }
 }
